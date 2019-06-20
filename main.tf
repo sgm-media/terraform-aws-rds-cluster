@@ -65,11 +65,6 @@ resource "aws_rds_cluster" "default" {
   dynamic "scaling_configuration" {
     for_each = var.scaling_configuration
     content {
-      # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
-      # which keys might be set in maps assigned here, so it has
-      # produced a comprehensive set here. Consider simplifying
-      # this after confirming which keys can be set in practice.
-
       auto_pause               = lookup(scaling_configuration.value, "auto_pause", null)
       max_capacity             = lookup(scaling_configuration.value, "max_capacity", null)
       min_capacity             = lookup(scaling_configuration.value, "min_capacity", null)
@@ -118,13 +113,8 @@ resource "aws_rds_cluster_parameter_group" "default" {
   description = "DB cluster parameter group"
   family      = var.cluster_family
   dynamic "parameter" {
-    for_each = [var.cluster_parameters]
+    for_each = var.cluster_parameters
     content {
-      # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
-      # which keys might be set in maps assigned here, so it has
-      # produced a comprehensive set here. Consider simplifying
-      # this after confirming which keys can be set in practice.
-
       apply_method = lookup(parameter.value, "apply_method", null)
       name         = parameter.value.name
       value        = parameter.value.value
@@ -138,14 +128,10 @@ resource "aws_db_parameter_group" "default" {
   name        = module.label.id
   description = "DB instance parameter group"
   family      = var.cluster_family
-  dynamic "parameter" {
-    for_each = [var.instance_parameters]
-    content {
-      # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
-      # which keys might be set in maps assigned here, so it has
-      # produced a comprehensive set here. Consider simplifying
-      # this after confirming which keys can be set in practice.
 
+  dynamic "parameter" {
+    for_each = var.instance_parameters
+    content {
       apply_method = lookup(parameter.value, "apply_method", null)
       name         = parameter.value.name
       value        = parameter.value.value

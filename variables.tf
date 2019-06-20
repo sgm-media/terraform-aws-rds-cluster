@@ -113,13 +113,13 @@ variable "tags" {
 }
 
 variable "cluster_parameters" {
-  type        = list(string)
+  type        = list(object({ name = string, value = string, apply_method = string }))
   default     = []
   description = "List of DB parameters to apply"
 }
 
 variable "instance_parameters" {
-  type        = list(string)
+  type        = list(object({ name = string, value = string, apply_method = string }))
   default     = []
   description = "List of DB instance parameters to apply"
 }
@@ -149,7 +149,12 @@ variable "engine_version" {
 }
 
 variable "scaling_configuration" {
-  type        = list(string)
+  type        = list(object({
+    auto_pause = string,
+    max_capacity = string,
+    min_capacity = string,
+    seconds_until_auto_pause = string
+  }))
   default     = []
   description = "List of nested attributes with scaling properties. Only valid when engine_mode is set to `serverless`"
 }
