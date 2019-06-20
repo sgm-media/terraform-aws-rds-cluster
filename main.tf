@@ -154,7 +154,7 @@ module "dns_master" {
   name      = local.cluster_dns_name
   stage     = var.stage
   zone_id   = var.zone_id
-  records   = [coalescelist(aws_rds_cluster.default.*.endpoint, [""])]
+  records   = coalescelist(aws_rds_cluster.default.*.endpoint, [""])
 }
 
 module "dns_replicas" {
@@ -164,7 +164,7 @@ module "dns_replicas" {
   name      = local.reader_dns_name
   stage     = var.stage
   zone_id   = var.zone_id
-  records   = [coalescelist(aws_rds_cluster.default.*.reader_endpoint, [""])]
+  records   = coalescelist(aws_rds_cluster.default.*.reader_endpoint, [""])
 }
 
 resource "aws_appautoscaling_target" "replicas" {
